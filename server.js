@@ -110,6 +110,7 @@ app.get("/profile", authMiddleware, async (req, res) => {
 });
 
 // ===== FEED / POSTS =====
+// ===== FEED / POSTS =====
 app.get("/posts", authMiddleware, async (req, res) => {
   try {
     const me = req.userId;
@@ -124,17 +125,18 @@ app.get("/posts", authMiddleware, async (req, res) => {
 
     // 2. Collect all involved user ids
     const excludeIds = relations.map(r =>
-      r.fromUserId.toString() === me
+      r.fromUserId.toString() === me.toString()
         ? r.toUserId
         : r.fromUserId
     );
 
-    excludeIds.push(me); // also exclude myself
-
-    // 3. Get feed
+    // 3. Get feed (FIXED QUERY)
     const users = await User.find({
-      _id: { $nin: excludeIds }
-    }).select("firstName lastName photoUrl");
+      $and: [
+        { _id: { $nin: excludeIds } }, // Excludes people you've already interacted with
+        { _id: { $ne: me } }           // 👈 Excludes YOU explicitly
+      ]
+    }).select("firstName lastName photoUrl age gender about"); // Added extra fields so cards look good!
 
     res.status(200).json(users);
 

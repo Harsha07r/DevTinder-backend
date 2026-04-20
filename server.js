@@ -23,9 +23,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173", 
-  credentials: true
+  origin: "https://devtinderproject.netlify.app",
+  credentials: true   // this allows cookies to be sent
 }));
+
 
 // ===== REGISTER =====
 app.post("/register", async (req, res) => {
@@ -109,7 +110,6 @@ app.get("/profile", authMiddleware, async (req, res) => {
   }
 });
 
-// ===== FEED / POSTS =====
 // ===== FEED / POSTS =====
 app.get("/posts", authMiddleware, async (req, res) => {
   try {
@@ -278,7 +278,6 @@ app.post("/request/review", authMiddleware, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 // ===== GET PENDING REQUESTS =====
 app.get("/requests", authMiddleware, async (req, res) => {

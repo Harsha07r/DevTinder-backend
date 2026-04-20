@@ -23,9 +23,10 @@ const userSchema = new mongoose.Schema({
     required: true
   },
 
- photoUrl: {
-  type: String,
-  default: "https://i.pravatar.cc/300/400"
+photoUrl: {
+    type: String,
+    // Replace the random image generator with this static URL:
+    default: "https://cdn-icons-png.flaticon.com/512/149/149071.png", 
 },
 age:{
   type: Number,

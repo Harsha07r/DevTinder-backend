@@ -23,8 +23,12 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-  origin: "https://devtinderproject.netlify.app",
-  credentials: true   // this allows cookies to be sent
+  origin: [
+    "http://localhost:5174", // Your local frontend 
+    "http://localhost:5173", // Just in case Vite switches back
+    "https://devtinderproject.netlify.app" // Your deployed frontend
+  ],
+  credentials: true // This is the magic line that fixes the error
 }));
 
 
